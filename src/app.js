@@ -1,39 +1,18 @@
 'use restrict';
 
-/**
- * Node modules
- */
 const SpotifyWebApi = require('spotify-web-api-node');
 const mongoose = require('mongoose');
 
-/**
- * Local modules
- */
 const {
   clientId, clientSecret, playlistId, username,
-} = require('../config/credentials');
-const {databaseUrl} = require('../config/database');
-
-mongoose.connect(databaseUrl, {
-  autoReconnect: true,
-  reconnectTries: Number.MAX_VALUE,
-  reconnectInterval: 1000,
-  useNewUrlParser: true,
-});
-mongoose.Promise = global.Promise;
-mongoose.connection.on('error', (err) => {
-  console.error(err.message);
-});
-require('./models/Track');
+} = require('../config');
 
 const Track = mongoose.model('Track');
 
-const options = {
+const spotifyApi = new SpotifyWebApi({
   clientId,
   clientSecret,
-};
-
-const spotifyApi = new SpotifyWebApi(options);
+});
 
 /**
  * Retrieves the client's credentials and token and use
@@ -97,4 +76,4 @@ const init = async () => {
   return true;
 };
 
-init();
+module.exports = init;
