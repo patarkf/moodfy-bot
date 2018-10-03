@@ -3,16 +3,11 @@
 const SpotifyWebApi = require('spotify-web-api-node');
 const mongoose = require('mongoose');
 
-const {
-  clientId, clientSecret, playlistId, username,
-} = require('../config');
+const {spotify} = require('../config');
 
 const Track = mongoose.model('Track');
 
-const spotifyApi = new SpotifyWebApi({
-  clientId,
-  clientSecret,
-});
+const spotifyApi = new SpotifyWebApi(spotify.credentials);
 
 /**
  * Retrieves the client's credentials and token and use
@@ -46,7 +41,8 @@ const shuffleArray = arr => arr.sort(() => Math.random() - 0.5);
 const init = async () => {
   await setSpotifyToken();
 
-  const data = await spotifyApi.getPlaylistTracks(username, playlistId, {
+  const {user: {username, playlistId}} = spotify;
+  const result = await spotifyApi.getPlaylistTracks(username, playlistId, {
     offset: 1,
     limit: 100,
     fields: 'items',
@@ -55,7 +51,7 @@ const init = async () => {
   const alreadyPostedTracks = await Track.find({}).select('spotifyId');
   const alreadyPostedTracksIds = alreadyPostedTracks.map(track => track.spotifyId);
 
-  const tracks = data.body.items.map(item => item.track);
+  const tracks = result.body.items.map(item => item.track);
 
   const availableForPostingTracks = tracks.filter(track => !alreadyPostedTracksIds.includes(track.id));
   if (!availableForPostingTracks.length) {

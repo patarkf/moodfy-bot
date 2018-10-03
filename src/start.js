@@ -1,9 +1,9 @@
 
 
 const mongoose = require('mongoose');
-const {databaseUrl} = require('../config/index');
+const {mongodb} = require('../config');
 
-mongoose.connect(databaseUrl, {
+mongoose.connect(mongodb.databaseUrl, {
   autoReconnect: true,
   reconnectTries: Number.MAX_VALUE,
   reconnectInterval: 1000,
