@@ -3,7 +3,7 @@
 const SpotifyWebApi = require('spotify-web-api-node');
 const mongoose = require('mongoose');
 
-const {spotify} = require('../config');
+const { spotify } = require('../config');
 
 const Track = mongoose.model('Track');
 
@@ -41,19 +41,19 @@ const shuffleArray = arr => arr.sort(() => Math.random() - 0.5);
 const init = async () => {
   await setSpotifyToken();
 
-  const {user: {username, playlistId}} = spotify;
+  const { user: { username, playlistId } } = spotify;
   const result = await spotifyApi.getPlaylistTracks(username, playlistId, {
     offset: 1,
     limit: 100,
     fields: 'items',
   });
 
-  const alreadyPostedTracks = await Track.find({}).select('spotifyId');
-  const alreadyPostedTracksIds = alreadyPostedTracks.map(track => track.spotifyId);
+  const oldTracks = await Track.find({}).select('spotifyId');
+  const oldTracksIds = oldTracks.map(track => track.spotifyId);
 
   const tracks = result.body.items.map(item => item.track);
 
-  const availableForPostingTracks = tracks.filter(track => !alreadyPostedTracksIds.includes(track.id));
+  const availableForPostingTracks = tracks.filter(track => !oldTracksIds.includes(track.id));
   if (!availableForPostingTracks.length) {
     console.log('There is no available tracks for posting at this moment. :(');
     return false;
