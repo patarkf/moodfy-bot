@@ -8,7 +8,6 @@ module.exports = {
     },
     user: {
       playlistId: process.env.PLAYLIST_ID,
-      username: process.env.USERNAME,
     },
   },
   mongodb: {

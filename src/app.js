@@ -41,8 +41,8 @@ const shuffleArray = arr => arr.sort(() => Math.random() - 0.5);
 const init = async () => {
   await setSpotifyToken();
 
-  const {user: {username, playlistId}} = spotify;
-  const result = await spotifyApi.getPlaylistTracks(username, playlistId, {
+  const {user: {playlistId}} = spotify;
+  const result = await spotifyApi.getPlaylistTracks(playlistId, {
     offset: 1,
     limit: 100,
     fields: 'items',
