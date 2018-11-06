@@ -1,7 +1,7 @@
+import mongoose from 'mongoose';
+import config from '../config/index.mjs';
 
-
-const mongoose = require('mongoose');
-const { mongodb } = require('../config');
+const { mongodb } = config;
 
 mongoose.connect(mongodb.databaseUrl, {
   autoReconnect: true,
@@ -13,8 +13,7 @@ mongoose.Promise = global.Promise;
 mongoose.connection.on('error', (err) => {
   console.error(err.message);
 });
-require('./models/Track');
-
-const app = require('./app');
+import './models/Track';
+import app from './app';
 
 app();
