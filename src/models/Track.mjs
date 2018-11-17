@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 mongoose.Promise = global.Promise;
-const mongodbErrorHandler = require('mongoose-mongodb-errors');
+import mongodbErrorHandler from 'mongoose-mongodb-errors';
 
 const trackSchema = new Schema({
   name: String,
@@ -13,4 +13,4 @@ const trackSchema = new Schema({
 
 trackSchema.plugin(mongodbErrorHandler);
 
-module.exports = mongoose.model('Track', trackSchema);
+export default mongoose.model('Track', trackSchema);

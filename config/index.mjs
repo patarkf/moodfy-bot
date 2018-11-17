@@ -1,6 +1,7 @@
-require('dotenv').config();
+import dotenv from 'dotenv'
+dotenv.config({ silent: true })
 
-module.exports = {
+export default {
   spotify: {
     credentials: {
       clientId: process.env.CLIENT_ID,

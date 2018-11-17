@@ -1,12 +1,10 @@
-'use restrict';
-
-const SpotifyWebApi = require('spotify-web-api-node');
-const mongoose = require('mongoose');
-
-const { spotify } = require('../config');
+import SpotifyWebApi from 'spotify-web-api-node';
+import mongoose from 'mongoose';
+import config from '../config/index.mjs';
 
 const Track = mongoose.model('Track');
 
+const { spotify } = config;
 const spotifyApi = new SpotifyWebApi(spotify.credentials);
 
 /**
@@ -72,4 +70,4 @@ const init = async () => {
   return true;
 };
 
-module.exports = init;
+export default init;
